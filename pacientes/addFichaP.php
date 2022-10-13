@@ -112,7 +112,7 @@
                             <a href="<?php echo EDIT_PACIENTE . $id ?>" class="btn btn-outline-success">agregar</a>
                         <?php endif; ?>
                         
-                        <a href="<?php echo PACIENTES; ?>" class="btn btn-outline-primary">Volver</a>
+                        <a href="<?php echo SHOW_FICHASPACIEN . $id ?>" class="btn btn-outline-primary">Volver</a>
                     </p>
                     <?php else: ?>
                         <p class="text-info">No hay datos</p>

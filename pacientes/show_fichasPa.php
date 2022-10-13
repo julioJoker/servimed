@@ -25,7 +25,7 @@
         $type = 'Paciente';
 
         $telefonos = $telefono->getTelefonoIdType($id, $type);
-        $reservas = $reserva->getPacienteId2($id);
+        $reservas = $reserva->getFichasPaciente($id);
 
     }
 
@@ -103,33 +103,38 @@
                     <table class="table table-hover">
                         <tr>
                             
+                            <th>N Ficha</th>
                             <th>Profecional</th>
                             <th>Especialidad</th>
                             <th>Fecha Atencion</th>
                             <th>Horario</th>
                         </tr>
-                        <?php foreach($reservas as $reserva):  ?>
+                       
                             <tr>
                                 <td>
-                                    <a href="<?php echo SHOW_FICHAPACIEN . $reserva['id']; ?>">
+                                    <a href="<?php echo SHOW_FICHAPACIEN . $reservas['id_ficha']; ?>">
                                         <?php
                                            // $fecha_creacion = new DateTime($reserva['created_at']);
                                             //echo $fecha_creacion->format('d-m-Y H:i:s');
-                                            var_dump($reserva);
-                                             
+                                           
+                                            echo $reservas['id']; 
                                         ?>
                                     </a>
 
                                 </td>
                                 <td>
-                                    <?php  //echo $reserva['rut']; ?>
+                                    <?php  echo $reservas['especialidad_id']; ?>
                                 </td>
                                 
                                 <td>
-                                    <?php //echo $reserva['id']; ?>
+                                    <?php echo $reservas['created_at']; ?>
+                                </td>
+
+                                <td>
+                                    <?php echo $reservas['id']; ?>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        
                     </table>
                 <?php else: ?>
                     <p class="text-info">No hay reservas registradas</p>

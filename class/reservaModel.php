@@ -23,6 +23,16 @@ class ReservaModel extends Model
 
         return $res->fetch();
     }
+    
+    public function getFichaPaciente($id2)
+    {
+        
+        $res = $this->_db->prepare("SELECT id, id_ficha, rut, peso, altura, data_ficha, rol_id, especialidad_id, created_at, edad_ficha FROM ficha_paciente WHERE id_ficha = ?");
+        $res->bindParam(1, $id2);
+        $res->execute();
+
+        return $res->fetch();
+    }
 
     public function getReservaPaciente($paciente)
     {
@@ -35,9 +45,9 @@ class ReservaModel extends Model
         return $res->fetchall();
     }
     
-    public function getPacienteId2($id)
+    public function getFichasPaciente($id)
     {
-        $pac = $this->_db->prepare("SELECT id, rut, peso, altura, dataFicha, created_at, updated_at  FROM fichaPaciente WHERE id = ?");
+        $pac = $this->_db->prepare("SELECT id, id_ficha, rut, peso, altura, data_ficha, rol_id, especialidad_id, created_at, edad_ficha FROM ficha_paciente WHERE id_ficha = ?");
         $pac->bindParam(1, $id);
         $pac->execute();
 

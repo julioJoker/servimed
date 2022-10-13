@@ -11,18 +11,18 @@
 
     $session = new Session;
 
-    if (isset($_GET['reserva'])) {
-        $id = (int) $_GET['reserva'];
+    if (isset($_GET['paciente'])) {
+        $id = (int) $_GET['paciente'];
 
-        $reservas = new ReservaModel;
-
-        $reserva = $reservas->getReservaId($id);
+        $fichaPaciente = new ReservaModel;
+        $ficha = $fichaPaciente->getFichaPaciente($id);
 
     }
 
     //print_r($roles);exit;
 
     $title = 'Ficha Medica ';
+    
 
 ?>
 <?php if(isset($_SESSION['autenticado'])): ?>
@@ -48,71 +48,34 @@
 
             <?php include('../partials/mensajes.php'); ?>
 
-            <?php if(!empty($reserva)): ?>
+            <?php if(!empty($ficha)): ?>
                 <table class="table table-hover">
                     <table class="table table-hover">
+                    
                     <tr>
-                       <th>Fecha Reserva:</th>
-                       <td>
-                            <?php
-                                $fecha_reserva = new DateTime($reserva['fecha']);
-                                echo $fecha_reserva->format('d-m-Y');
-                            ?>
-                        </td>
+                        <th>rut:</th>
+                        <td><?php echo $ficha['rut']; ?></td>
+                    </tr>
+                   
+                    <tr>
+                        <th>peso:</th>
+                        <td><?php echo $ficha['peso']; ?></td>
                     </tr>
                     <tr>
-                        <th>Horario:</th>
-                        <td><?php echo $reserva['horario']; ?></td>
+                        <th>estatura:</th>
+                        <td><?php echo $ficha['altura']; ?></td>
                     </tr>
-                    <tr>
-                        <th>Activo:</th>
-                        <td>
-                            <?php
-                                if ($reserva['activo'] == 1) {
-                                    echo 'Si';
-                                }else {
-                                    echo 'No';
-                                }
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Especialidad:</th>
-                        <td><?php echo $reserva['especialidad']; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Paciente:</th>
-                        <td><?php echo $reserva['paciente']; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Empleado:</th>
-                        <td><?php echo $reserva['empleado']; ?></td>
-                    </tr>
+                    <div>
+                        <th>data:</th>
+                        <td><?php $texto =  $ficha['data_ficha']; echo wordwrap($texto, 50, "<br>"); ?></td>
+                     </div>
 
-                    <tr>
-                        <th>Fecha Creación:</th>
-                        <td>
-                            <?php
-                                $creado = new DateTime($reserva['created_at']);
-                                echo $creado->format('d-m-Y H:i:s');
-                            ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Fecha Modificación:</th>
-                        <td>
-                            <?php
-                                $modificado = new DateTime($reserva['updated_at']);
-                                echo $modificado->format('d-m-Y H:i:s');
-                            ?>
-                        </td>
-                    </tr>
                 </table>
                 <p>
                     <?php if($_SESSION['usuario_rol'] == 'Administrador'): ?>
                         <a href="<?php echo EDIT_RESERVA . $id ?>" class="btn btn-outline-success">Editar</a>
                     <?php endif; ?>
-                    <a href="<?php echo BASE_URL; ?>" class="btn btn-outline-success">Volver</a>
+                    <a href="<?php echo SHOW_FICHASPACIEN . $id ; ?>" class="btn btn-outline-success">Volver</a>
             <?php else: ?>
                 <p class="text-info">No hay datos</p>
             <?php endif; ?>

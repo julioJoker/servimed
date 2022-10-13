@@ -45,7 +45,7 @@
             }else {
 
                 $res = $paciente->addPaciente($rut, $nombre, $email, $direccion,$fecha_nacimiento, $fonasa);
-echo($fonasa);
+                echo($fonasa);
                 if ($res) {
                     $_SESSION['success'] = 'El paciente se ha registrado correctamente';
                     header('Location: ' . PACIENTES);
