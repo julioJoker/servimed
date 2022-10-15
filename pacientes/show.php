@@ -89,6 +89,10 @@
                             <th>Edad:</th>
                             <td><?php echo $paciente['edad']; ?> años</td>
                         </tr>
+                        <tr>
+                            <th>sexo:</th>
+                            <td><?php echo $paciente['sexo']; ?> </td>
+                        </tr>
                             <tr>
                                 <th>Teléfonos:</th>
                                 <td>
@@ -128,7 +132,7 @@
                             <?php endif; ?>
                             <a href="<?php echo ADD_TEL_PAC . $id; ?>" class="btn btn-outline-success">Agregar Teléfono</a>
                             <a href="<?php echo PACIENTES; ?>" class="btn btn-outline-primary">Volver</a>
-                        </p>
+                        </p>                    
                         <p>
                             <a href="<?php echo ADD_RESERVA . $id ?>" class="btn btn-outline-primary">Reservar Hora</a>
                         </p>

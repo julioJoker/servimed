@@ -112,7 +112,7 @@
                     <?php if($_SESSION['usuario_rol'] == 'Administrador'): ?>
                         <a href="<?php echo EDIT_RESERVA . $id ?>" class="btn btn-outline-success">Editar</a>
                     <?php endif; ?>
-                    <a href="<?php echo BASE_URL; ?>" class="btn btn-outline-success">Volver</a>
+                    <a href="<?php echo RESERVAS; ?>" class="btn btn-outline-success">Volver</a>
             <?php else: ?>
                 <p class="text-info">No hay datos</p>
             <?php endif; ?>

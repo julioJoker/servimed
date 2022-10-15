@@ -23,11 +23,14 @@
         $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         $fecha_nacimiento = trim(strip_tags($_POST['fecha_nacimiento']));
         $fonasa = filter_var($_POST['fonasa'], FILTER_VALIDATE_INT);
+        $sexo = filter_var($_POST['sexo'], FILTER_VALIDATE_INT);
 
         if (strlen($rut) < 9 || strlen($rut) > 10) {
             $msg = 'Ingrese un RUT de al menos 9 caracteres';
         }elseif (!$nombre) {
             $msg = 'Ingrese el nombre del paciente';
+        }elseif (!$sexo) {
+            $msg = 'Seleccione el sexo del paciente';
         }elseif (!$email) {
             $msg = 'Ingrese el correo electrónico del paciente';
         }elseif (!$direccion) {
@@ -44,8 +47,8 @@
                 $msg = 'El paciente ingresado ya existe... intente con otro';
             }else {
 
-                $res = $paciente->addPaciente($rut, $nombre, $email, $direccion,$fecha_nacimiento, $fonasa);
-                echo($fonasa);
+                $res = $paciente->addPaciente($rut, $nombre,$sexo, $email, $direccion,$fecha_nacimiento, $fonasa);
+                
                 if ($res) {
                     $_SESSION['success'] = 'El paciente se ha registrado correctamente';
                     header('Location: ' . PACIENTES);
@@ -97,6 +100,19 @@
                     <label for="nombre" class="form-label">Nombre<span class="text-danger">*</span>  </label>
                     <input type="text" name="nombre" value="<?php if(isset($_POST['nombre'])) echo $_POST['nombre']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
                     <div id="empleadoHelp" class="form-text text-danger">Ingrese el nombre del Paciente</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="sexo" class="form-label">Sexo<span class="text-danger">*</span>  </label>
+                    <select name="sexo" class="form-control">
+                        <option value="">Seleccione...</option>
+                        <option value="1">Femenino</option>
+                        <option value="2">Masculino</option>
+                        <option value="3">Transgénero</option>
+                        <option value="4">Agénero</option>
+                        <option value="4">Otro</option>
+                    </select>
+                    <div id="empleadoHelp" class="form-text text-danger">Seleccione la previsión de salud del Paciente</div>
                 </div>
 
                 <div class="mb-3">

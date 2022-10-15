@@ -23,6 +23,7 @@
             $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
             $direccion = trim(strip_tags($_POST['dirección']));
             $fonasa = filter_var($_POST['fonasa'], FILTER_VALIDATE_INT);
+            $sexo = filter_var($_POST['sexo']);
 
             if (!$nombre) {
                 $msg = 'Ingrese el nombre del paciente';
@@ -33,7 +34,7 @@
             }elseif (!$fonasa) {
                 $msg = 'Seleccione la prevision de salud del paciente';
             }else{
-                $pac = $pacientes->editPaciente($id, $nombre, $email,$direccion , $fonasa);
+                $pac = $pacientes->editPaciente($id, $nombre,$sexo, $email,$direccion , $fonasa);
 
                 if ($pac) {
                     $_SESSION['success'] = 'El paciente se ha modificado correctamente';
@@ -82,7 +83,33 @@
                         <input type="text" name="nombre" value="<?php echo $paciente['nombre']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
                         <div id="empleadoHelp" class="form-text text-danger">Ingrese el nombre del Paciente</div>
                     </div>
-
+                    <div class="mb-3">
+                        <label for="sexo" class="form-label">sexo<span class="text-danger">*</span>  </label>
+                        <select name="sexo" class="form-control">
+                            <option value="<?php echo $paciente['sexo'] ?>">
+                                <?php
+                               
+                                    if ($paciente['sexo'] == 'Femenino') {
+                                        echo $paciente['Femenino'];
+                                    }elseif ($paciente['sexo'] == 'Masculino'){
+                                        echo 'Masculino';
+                                    }elseif ($paciente['sexo'] == 'Transgénero'){
+                                        echo 'Transgénero';
+                                    }elseif ($paciente['sexo'] == 'Agénero'){
+                                        echo 'Agénero';
+                                    }else{
+                                        echo 'Otro';
+                                    }
+                                ?>
+                            </option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Masculino">Masculino</option>
+                             <option value="Transgénero">Transgénero</option>
+                            <option value="Agénero">Agénero</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                        <div id="empleadoHelp" class="form-text text-danger">Seleccione la previsión de salud del Paciente</div>
+                    </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email<span class="text-danger">*</span>  </label>
                         <input type="email" name="email" value="<?php echo $paciente['email']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
@@ -90,7 +117,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="dirección" class="form-label">Nombre<span class="text-danger">*</span>  </label>
+                        <label for="dirección" class="form-label">Direccion<span class="text-danger">*</span>  </label>
                         <input type="text" name="dirección" value="<?php echo $paciente['dirección']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
                         <div id="empleadoHelp" class="form-text text-danger">Ingrese el Dirección del Paciente</div>
                     </div>
