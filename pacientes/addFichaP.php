@@ -9,28 +9,59 @@
     require('../class/pacienteModel.php');
     require('../class/telefonoModel.php');
     require('../class/reservaModel.php');
+    require('../class/empleadoModel.php');
 
     $session = new Session;
 
     if (isset($_GET['paciente'])) {
-        $id = (int) $_GET['paciente'];
 
+
+        
+
+        $id = (int) $_GET['paciente'];
+        $id_ficha = $id;
         $pacientes = new PacienteModel;
+        $Fichapacientes = new ReservaModel;
         $telefono = new TelefonoModel;
         $reserva = new ReservaModel;
+        $nombreProfeciona = new EmpleadoModel;
 
         $paciente = $pacientes->getPacienteId($id);
-        $type = 'Paciente';
-
-        $telefonos = $telefono->getTelefonoIdType($id, $type);
         $reservas = $reserva->getReservaPaciente($id);
-       // $peso = trim(strip_tags($_POST['rut']));
+        $nombreProfecionas = $nombreProfeciona->getEmpleadoId($id);
 
-        /*if (strlen($peso) == 0) {
-            $msg = 'Ingrese el peso del paciente';
-        }*/
+        
+        if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
+        $nombre_profe = trim(strip_tags($nombreProfecionas['nombre'])); //sanitizacion basica
+        $especialidad_nom = $nombreProfecionas['rol'];
+        $nombre_paciente = trim(strip_tags($paciente['nombre']));
+        $rutPaciente = $paciente['rut'];
+        $peso =  trim(strip_tags($_POST['peso']));
+        $altura = trim(strip_tags($_POST['altura']));
+        $data_sintomas = trim(strip_tags($_POST['dataSintoma']));
+        $data_observacion =  trim(strip_tags($_POST['dataObservacion']));
+        $data_tratamiento = trim(strip_tags($_POST['dataTratamiento']));
+        $edad =$paciente['edad'];
+        $rol_id = 2;
+        $especialidad_id2 = 3;
+        $created_at = '2021-10-30 12:53:37';
+        $edad_ficha ='0000-00-00 00:00:00';
+        
+        if (strlen($rutPaciente) < 9 || strlen($rutPaciente) > 10) {
+            $msg = 'Ingrese un RUT de al menos 9 caracteres';
+        }
+        else{
 
-    }
+            $res = $Fichapacientes->getAddFichaPaciente($id_ficha,$nombre_profe,$especialidad_nom ,$nombre_paciente,$rutPaciente,$peso, $altura,$data_sintomas, $data_observacion ,$data_tratamiento );
+                
+                            if ($res) {
+                    $_SESSION['success'] = 'Ficha del paciente se ha registrado correctamente';
+                    header('Location: ' . PACIENTES);
+                }
+        }
+        echo($edad);
+        
+    }}
 
     //print_r($roles);exit;
 
@@ -58,66 +89,84 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
-                        <h4><?php echo $title; ?> </h4>
-                    <?php include('../partials/mensajes.php'); ?>
-                    <?php if(!empty($paciente)): ?>
-                    <table>
-                        <tr>
-                            <th>RUT:</th>
-                            <td><?php echo $paciente['rut']; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Nombre:</th>
-                            <td><?php echo $paciente['nombre']; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Edad:</th>
-                            <td><?php echo $paciente['edad']; ?> años</td>
-                        </tr>
-                    </table> 
-                       <!-- <tr>
-                            <th>Teléfonos:</th>
-                            <td>
-                                <?php if ($telefonos): ?>
-                                    <div class="list-group list-group-flush">
-                                        <?php foreach($telefonos as $telefono): ?>
-                                            <a href="<?php echo SHOW_TELEFONO . $telefono['id']; ?>" class="list-group-item list-group-item-action">+56 <?php echo $telefono['numero']; ?></a>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php else: ?>
-                                    <p>Sin teléfono</p>
-                                <?php endif; ?>
-                            </td>
-                        </tr>-->
-                        <table class="table table-hover">
-                    </table>
-                    <div class="x-small">
-                        <label for="rut" style=" font-size: 90%" class="form-label">Peso<span class="text-danger" style=" font-size: 30%">*</span>  </label>
-                        <input type="text" name="rut" value="<?php if(isset($_POST['rut'])) echo $_POST['rut']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
-                        <div id="empleadoHelp" class="form-text text-danger" style=" font-size: 50%">Debe Ingresar Peso </div>
+                    <h4><?php echo $title; ?></h4>
+                    <p class="text-danger">Campos obligatorios *</p>
+                    <?php if(isset($msg)): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo $msg; ?>
                     </div>
-                    <div class="mb-3">
-                        <label for="altura" style=" font-size: 90%"  class="form-label">Altura<span class="text-danger" style=" font-size: 30%" >*</span>  </label>
-                        <input type="text" name="altura" value="<?php if(isset($_POST['altura'])) echo $_POST['altura']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
-                        <div id="empleadoHelp" class="form-text text-danger" style=" font-size: 35%">Debe Ingresar Altura </div>
-                    </div>
-                    <div>
-                        <p>
-                            <label for="w3review">Datos de la Consulta:</label>
-                        </p>
-                        <textarea id="w3review" name="w3review" rows="30" cols="120"></textarea>
-                    </div>
-                    <p>
-                        <?php if($_SESSION['usuario_rol'] == 'Administrador'): ?>
-                            <a href="<?php echo EDIT_PACIENTE . $id ?>" class="btn btn-outline-success">agregar</a>
-                        <?php endif; ?>
-                        
-                        <a href="<?php echo SHOW_FICHASPACIEN . $id ?>" class="btn btn-outline-primary">Volver</a>
-                    </p>
-                    <?php else: ?>
-                        <p class="text-info">No hay datos</p>
                     <?php endif; ?>
-                    </div>
+                        <form name="form" action="" method="post">
+                            <div>
+                                <tr>
+                                    <th>Profecional: </th>
+                                    <td><?php  echo $nombreProfecionas['nombre']; ?></td>
+                                </tr>
+                            </div>
+                            <div>    
+                                <tr>
+                                    <th>Especialidad: </th>
+                                    <td><?php  echo $nombreProfecionas['rol']; ?></td>
+                                </tr>
+                            </div>    
+                            
+                            <div>    
+                                <tr>
+                                    <th>Nombre Paciente:</th>
+                                    <td><?php echo $paciente['nombre']; ?></td>
+                                </tr>
+                            </div>
+
+                            <div>
+                                <tr>
+                                    <th>RUT Paciente:</th>
+                                    <td><?php echo $paciente['rut']; ?></td>
+                                </tr>
+                            </div>
+                            <div>
+                                <tr>
+                                    <th>Edad Paciente :</th>
+                                    <td><?php echo $paciente['edad']; ?> años</td>
+                                </tr>
+                            </div>    
+
+                            <div class="x-small">
+                                <label for="peso" style=" font-size: 90%" class="form-label">Peso<span class="text-danger" style=" font-size: 30%">*</span>  </label>
+                                <input type="text" name="peso" value="<?php if(isset($_POST['peso'])) echo $_POST['peso']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
+                                <div id="empleadoHelp" class="form-text text-danger" style=" font-size: 50%">Debe Ingresar Peso </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="altura" style=" font-size: 90%"  class="form-label">Altura<span class="text-danger" style=" font-size: 30%" >*</span>  </label>
+                                <input type="text" name="altura" value="<?php if(isset($_POST['altura'])) echo $_POST['altura']; ?>" class="form-control" aria-describedby="empleadoHelpInline">
+                                <div id="empleadoHelp" class="form-text text-danger" style=" font-size: 35%">Debe Ingresar Altura </div>
+                            </div>
+                            <div>
+                                <p>
+                                    <label for="dataSintoma">Sintomas:</label>
+                                </p>
+                                <textarea id="dataSintoma" name="dataSintoma" rows="20" cols="115"></textarea>
+                            </div>
+                            <div>
+                                <p>
+                                    <label for="dataObservacion">Observacion:</label>
+                                </p>
+                                <textarea id="dataObservacion" name="dataObservacion" rows="20" cols="115"></textarea>
+                            </div>
+                            <div>
+                                <p>
+                                    <label for="dataTratamiento">Tratamiento:</label>
+                                </p>
+                                <textarea id="dataTratamiento" name="dataTratamiento" rows="20" cols="115"></textarea>
+                            </div>
+                            <p>
+                                <div class="mb-3">
+                                    <input type="hidden" name="confirm" value="1">
+                                    <button type="submit" class="btn btn-outline-success">Guardar</button>
+                                    <a href="<?php echo PACIENTES; ?>" class="btn btn-outline-primary">Volver</a>
+                                </div>
+                            </p>
+                        </form>
+                </div>
             </div>
         </div>
     </div>

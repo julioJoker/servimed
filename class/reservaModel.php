@@ -27,12 +27,33 @@ class ReservaModel extends Model
     public function getFichaPaciente($id2)
     {
         
-        $res = $this->_db->prepare("SELECT id, id_ficha, rut, peso, altura, data_ficha, rol_id, especialidad_id, created_at, edad_ficha FROM ficha_paciente WHERE id_ficha = ?");
+        $res = $this->_db->prepare("SELECT id, id_ficha, nombre_profecional, Especialidad_ficha,nombre_paciente, rut, sexo_paciente, peso, altura, data_sintomas, data_observacion, data_tratamiento FROM ficha_paciente WHERE id_ficha = ?");
         $res->bindParam(1, $id2);
         $res->execute();
 
         return $res->fetch();
     }
+
+    public function getAddFichaPaciente($id_ficha,$nombre_profe,$especialidad_nom ,$nombre_paciente,$rutPaciente,$peso, $altura,$data_sintomas, $data_observacion ,$data_tratamiento  )  
+{
+    
+    $res = $this->_db->prepare("INSERT INTO `ficha_paciente`(id_ficha, nombre_profecional, Especialidad_ficha, nombre_paciente, rut_paciente, peso, altura, data_sintomas, data_observacion, data_tratamiento) VALUES (?,?,?,?,?,?,?,?,?,?)");
+   
+    $res->bindParam(1, $id_ficha);
+    $res->bindParam(2, $nombre_profe);
+    $res->bindParam(3, $especialidad_nom);
+    $res->bindParam(4, $nombre_paciente);
+    $res->bindParam(5, $rutPaciente);
+    $res->bindParam(6, $peso);
+    $res->bindParam(7, $altura);
+    $res->bindParam(8, $data_sintomas);
+    $res->bindParam(9, $data_observacion);
+    $res->bindParam(10, $data_tratamiento);
+    $res->execute();
+
+    $row = $res->rowCount();
+    return $row;
+}
 
     public function getReservaPaciente($paciente)
     {
@@ -45,10 +66,10 @@ class ReservaModel extends Model
         return $res->fetchall();
     }
     
-    public function getFichasPaciente($id)
+    public function getFichasPaciente($rutPaciente)
     {
-        $pac = $this->_db->prepare("SELECT id, id_ficha, rut, peso, altura, data_ficha, rol_id, especialidad_id, created_at, edad_ficha FROM ficha_paciente WHERE id_ficha = ?");
-        $pac->bindParam(1, $id);
+        $pac = $this->_db->prepare(" SELECT `id`, `id_ficha`, `nombre_profecional`, `Especialidad_ficha`, `nombre_paciente`, `rut_paciente`, `peso`, `altura`, `data_sintomas`, `data_observacion`, `data_tratamiento` FROM `ficha_paciente` WHERE rut_paciente = ?");
+        $pac->bindParam(1, $rutPaciente);
         $pac->execute();
 
         return $pac->fetch();

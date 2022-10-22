@@ -9,6 +9,8 @@
     require('../class/pacienteModel.php');
     require('../class/telefonoModel.php');
     require('../class/reservaModel.php');
+    require('../class/empleadoModel.php');
+
 
     $session = new Session;
 
@@ -18,18 +20,20 @@
         $pacientes = new PacienteModel;
         $telefono = new TelefonoModel;
         $reserva = new ReservaModel;
+        $nombreProfeciona = new EmpleadoModel;
 
-        $var =4;
+        
 
         $paciente = $pacientes->getPacienteId($id);
         $type = 'Paciente';
-
+        $rutPaciente = $paciente['rut'];
         $telefonos = $telefono->getTelefonoIdType($id, $type);
-        $reservas = $reserva->getFichasPaciente($id);
+        $reservas = $reserva->getFichasPaciente($rutPaciente);
+        $nombreProfecionas = $nombreProfeciona->getEmpleadoId($id);
 
     }
 
-    //print_r($roles);exit;
+    //print_r($id);exit;
 
     $title = 'Pacientes';
 
@@ -112,26 +116,25 @@
                        
                             <tr>
                                 <td>
-                                    <a href="<?php echo SHOW_FICHAPACIEN . $reservas['id_ficha']; ?>">
+                                    <a href="<?php echo SHOW_FICHAPACIEN . $reservas['nombre_profecional']; ?>">
                                         <?php
                                            // $fecha_creacion = new DateTime($reserva['created_at']);
                                             //echo $fecha_creacion->format('d-m-Y H:i:s');
                                            
-                                            echo $reservas['id']; 
+                                            echo $reservas['nombre_profecional']; 
                                         ?>
                                     </a>
 
                                 </td>
                                 <td>
-                                    <?php  echo $reservas['especialidad_id']; ?>
+                                    <?php  echo $nombreProfecionas['nombre']; ?>
                                 </td>
                                 
                                 <td>
-                                    <?php echo $reservas['created_at']; ?>
+                                <?php  echo $nombreProfecionas['rol']; ?>
                                 </td>
 
                                 <td>
-                                    <?php echo $reservas['id']; ?>
                                 </td>
                             </tr>
                         

@@ -15,6 +15,15 @@ class EmpleadoModel extends Model
 
         return $emp->fetchall();
     }
+    
+    public function getEmpleadosFicha($id)
+    {
+        
+        $emp = $this->_db->query("SELECT e.id, e.nombre, r.nombre as rol, es.nombre as especialidad FROM empleados e INNER JOIN roles r ON r.id = e.rol_id INNER JOIN especialidades es ON e.especialidad_id = es.id WHERE  es.id = ?");
+        $emp->bindParam(1, $id);
+        $emp->execute();
+        return $emp->fetch();
+    }
 
     public function getEmpleadoId($id)
     {
@@ -24,6 +33,7 @@ class EmpleadoModel extends Model
 
         return $emp->fetch();
     }
+   
 
     public function getEmpleadoRutEmail($rut, $email)
     {

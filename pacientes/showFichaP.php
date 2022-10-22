@@ -49,25 +49,59 @@
             <?php include('../partials/mensajes.php'); ?>
 
             <?php if(!empty($ficha)): ?>
+                <div>
+                    <tr>
+                        <th>Profecional:</th>
+                        <td><?php echo $ficha['nombre_profecional']; ?></td>
+                    </tr>
+                    <div>    
+                    <tr>
+                        <th>Especialidad:</th>
+                        <td><?php echo $ficha['Especialidad_ficha']; ?></td>
+                    </tr>
                 <table class="table table-hover">
+
+                     
                     <table class="table table-hover">
                     
                     <tr>
-                        <th>rut:</th>
+                        <th>Nombre:</th>
+                        <td><?php echo $ficha['nombre_paciente']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Rut:</th>
                         <td><?php echo $ficha['rut']; ?></td>
                     </tr>
                    
                     <tr>
-                        <th>peso:</th>
+                        <th>Edad:</th>
                         <td><?php echo $ficha['peso']; ?></td>
                     </tr>
                     <tr>
-                        <th>estatura:</th>
+                        <th>Sexo:</th>
+                        <td><?php echo $ficha['altura']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Peso:</th>
+                        <td><?php echo $ficha['peso']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Altura:</th>
                         <td><?php echo $ficha['altura']; ?></td>
                     </tr>
                     <div>
-                        <th>data:</th>
-                        <td><?php $texto =  $ficha['data_ficha']; echo wordwrap($texto, 50, "<br>"); ?></td>
+                        <th>Sintomas:</th>
+                        <td><?php $texto =  $ficha['data_sintomas']; echo wordwrap($texto, 50, "<br>"); ?></td>
+                     </div>
+                     <div>
+                        <tr>
+                          <th>Observaciones:</th>
+                          <td><?php $texto =  $ficha['data_observacion']; echo wordwrap($texto, 50, "<br>"); ?></td>
+                        </tr>
+                        </div>
+                     <div>
+                        <th>Tratamiento:</th>
+                        <td><?php $texto =  $ficha['data_tratamiento']; echo wordwrap($texto, 50, "<br>"); ?></td>
                      </div>
 
                 </table>
